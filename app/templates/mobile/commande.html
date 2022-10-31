@@ -1,0 +1,65 @@
+{% extends 'mobile/index.html' %}
+{% load static %}
+
+
+{% block mobilebody %}
+
+
+<div id="appCapsule">
+
+    <div class="section mt-2">
+        <div class="section-title">Total commandes</div>
+        <div class="card">
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <th scope="row">{{i.trackingnumber}}</th>
+                            <td>{{i.total}}</td>
+                            {% if i.mode == 'livree' %}
+                            <td>
+                                <span class="badge badge-success">Livree</span>
+                            </td>
+                            
+                            {% elif i.mode == 'en_retour' %}
+                            <td>
+                                <span class="badge badge-warning">Retour</span>
+                            </td>
+                            
+                            {% elif i.mode == 'annuler' %}
+                            <td>
+                                <span class="badge badge-danger">Annuler</span>
+                            </td>
+                            {% else %}
+                            <td>
+                                <span class="badge badge-primary">{{i.mode}}</span>
+                            </td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'app:commandeEdit' i.pk %}" class="badge badge-secondary">
+                                    <ion-icon name="create-outline" role="img" class="md hydrated"></ion-icon>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock mobilebody %}

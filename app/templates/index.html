@@ -1,0 +1,938 @@
+{% load static %}
+{% load bootstrap4 %}
+
+<!doctype html>
+<html lang="en">
+
+    
+<head>
+        
+        <meta charset="utf-8" />
+        <title>Shippili | {{nbar}}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Gyges Team" name="description" />
+        <meta content="REDA BENHAMID" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+
+        <!-- Bootstrap Css -->
+        <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'assets/libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="{% static 'assets/css/dropzone.min.css' %}" type="text/css" />
+        {% block csslib %}
+
+        {% endblock csslib %}
+
+
+    </head>
+
+    <body data-sidebar="dark" class="vertical-collpsed">
+
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            
+            <header id="page-topbar">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <!-- LOGO -->
+                        <div class="navbar-brand-box">
+                            <a href="{% url 'app:dashboard' 'ans' %}" class="logo logo-dark">
+                                <span class="logo-sm">
+                                    <img src="{% static 'assets/images/logo.svg' %}" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="{% static 'assets/images/logo.svg' %}" alt="" height="17">
+                                </span>
+                            </a>
+
+                            <a href="{% url 'app:dashboard' 'ans' %}" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="{% static 'assets/images/logo.svg' %}" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="{% static 'assets/images/logo.svg' %}" alt="" height="19">
+                                </span>
+                            </a>
+                        </div>
+
+                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn" onclick="changer()">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+
+                        <!-- App Search-->
+                        <form class="app-search d-none d-lg-block">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Recherche...">
+                                <span class="bx bx-search-alt"></span>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="d-flex">
+
+                        <div class="dropdown d-inline-block d-lg-none ms-2">
+                            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-search-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-magnify"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                                aria-labelledby="page-header-search-dropdown">
+        
+                                <form class="p-3">
+                                    <div class="form-group m-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                  
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            
+                                <span class="d-none d-xl-inline-block ms-1" key="t-henry">Importation Commande</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#googlesheetmodal"><i class="bx bx-table font-size-16 align-middle me-1"></i> <span key="t-profile">Google Sheet</span></a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#shopifymodal"><i class="bx bxl-shopify font-size-16 align-middle me-1"></i> <span key="t-my-wallet">Shopify</span></a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown d-none d-lg-inline-block ms-1">
+                            <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen">
+                                <i class="bx bx-fullscreen"></i>
+                            </button>
+                        </div>
+
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-bell bx-tada"></i>
+                                <span class="badge bg-danger rounded-pill">1</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                                aria-labelledby="page-header-notifications-dropdown">
+                                <div class="p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h6 class="m-0" key="t-notifications"> Notifications </h6>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div data-simplebar style="max-height: 230px;">
+                                    <a href="javascript: void(0);" class="text-reset notification-item">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-primary rounded-circle font-size-16">
+                                                    <i class="bx bx-cart"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1" key="t-your-order">Notif shippili exemple</h6>
+                                                <div class="font-size-12 text-muted">
+                                                    <p class="mb-1" key="t-grammer">Lorem ipsum dolor sit amet</p>
+                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">il y a 30 min</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                 
+                                </div>
+                                <div class="p-2 border-top d-grid">
+                                    <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
+                                        <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">Plus ..</span> 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="bx bx-customize"></i>
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" >
+                            <div class="px-lg-2">
+                                <div class="row g-0">
+                                    <div class="col border border-secondary">
+                                        <a class="dropdown-icon-item" href="{% url 'app:commande' %}">
+                                            <span><button type="button" class="btn btn-success btn-rounded waves-effect waves-light">Ajouter +</button></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row g-0">
+                                    <div class="col border border-secondary">
+                                        <a class="dropdown-icon-item" href="{% url 'app:commandefilter' 'en_confirmation' %}">
+                                            <span>en confirmation</span>
+                                            <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light">{{a}}</button>
+                                        </a>
+                                    </div>
+                                    <div class="col border border-secondary">
+                                        <a class="dropdown-icon-item" href="{% url 'app:commandefilter' 'en_preparation' %}">
+                                            <span>en preparation</span>
+                                            <button type="button" class="btn btn-warning btn-rounded waves-effect waves-light">{{b}}</button>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row g-0">
+                                    <div class="col border border-secondary">
+                                        <a class="dropdown-icon-item" href="{% url 'app:commandefilter' 'en_dispatch' %}">
+                                            <span>en dispatch</span>
+                                            <button type="button" class="btn btn-secondary btn-rounded waves-effect waves-light">{{c}}</button>
+                                        </a>
+                                    </div>
+                                    <div class="col border border-secondary">
+                                        <a class="dropdown-icon-item" href="{% url 'app:commandefilter' 'en_livraison' %}">
+                                            <span>en livraison</span>
+                                            <button type="button" class="btn btn-info btn-rounded waves-effect waves-light">{{d}}</button>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row g-0">
+                                    <div class="col border border-secondary">
+                                        <a class="dropdown-icon-item" href="{% url 'app:commandefilter' 'livree' %}">
+                                            <span>livrée</span>
+                                            <button type="button" class="btn btn-success btn-rounded waves-effect waves-light">{{e}}</button>
+                                        </a>
+                                    </div>
+                                    <div class="col border border-secondary">
+                                        <a class="dropdown-icon-item" href="{% url 'app:commandefilter' 'en_retour' %}">
+                                            <span>en retour</span>
+                                            <button type="button" class="btn btn-danger btn-rounded waves-effect waves-light">{{f}}</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="{{request.user.photo_profil.url}}"
+                                    alt="Header Avatar">
+                                <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{request.user}}</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <a class="dropdown-item" href="{% url 'app:profil' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Profile</span></a>
+                                <a class="dropdown-item" href="#"><i class="bx bx-wallet font-size-16 align-middle me-1"></i> <span key="t-my-wallet">Boite Email</span></a>
+                                {% if request.user.is_superuser %}
+                                <a class="dropdown-item d-block" href="{% url 'app:settings' %}"><span class="badge bg-success float-end">11</span><i class="bx bx-wrench font-size-16 align-middle me-1"></i> <span key="t-settings">Parametrage</span></a>
+                                {% endif %}
+                                <a class="dropdown-item" href="#"><i class="bx bx-lock-open font-size-16 align-middle me-1"></i> <span key="t-lock-screen">Fermeture de session</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{% url 'app:logout' %}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Se deconnecter</span></a>
+                            </div>
+                        </div>
+
+           
+
+                    </div>
+                </div>
+            </header>
+
+                        <!-- ========== Left Sidebar Start ========== -->
+                        <div class="vertical-menu">
+
+                            <div data-simplebar class="h-100">
+            
+                                <!--- Sidemenu -->
+                                <div id="sidebar-menu">
+                                    <!-- Left Menu Start -->
+                                    <ul class="metismenu list-unstyled" id="side-menu">
+
+                                        {% if perms.app.view_client %}
+                                        <li class="menu-title" key="t-menu">Clients</li>
+
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class="bx bx-user"></i>
+                                                <span key="t-dashboards">Module Clients</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                {% if perms.app.add_client %}
+                                                <li><a href="{% url 'app:addclient' %}" key="t-default">Ajouter un Client</a></li>
+                                                {% endif %}
+
+                                                {% if perms.app.view_client %}
+                                                <li><a href="{% url 'app:clients' %}" key="t-default">Affichage Clients</a></li>
+                                                {% endif %}
+                                                {% if perms.app.add_client %}
+                                                <li><a href="{% url 'app:importclts' %}" key="t-saas">Importation Clients</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+            
+
+                                        {% if perms.app.view_product %}
+                                        <li class="menu-title" key="t-menu">Produits</li>
+            
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class='bx bx-box'></i>
+                                                <span key="t-dashboards">Module Produits</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                {% if perms.app.add_product %}
+                                                <li><a href="{% url 'app:addprod' %}" key="t-default">Ajouter un produits</a></li>
+                                                <li><a href="{% url 'app:bulkprod' %}" key="t-default">Importation produits</a></li>
+                                                {% endif %}
+                                                <li><a href="{% url 'app:produits' %}" key="t-saas">Affichage produits</a></li>
+                                                {% if perms.app.view_variation %}
+                                                <li><a href="{% url 'app:variations' %}" key="t-saas">Variations produits</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+
+                                        {% if perms.app.view_mouvement %}
+
+                                        <li class="menu-title" key="t-menu">Gestion stock</li>
+            
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class='bx bxs-truck'></i>
+                                                <span key="t-dashboards">Module Stock</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                {% if perms.app.add_mouvement %}
+                                                <li><a href="{% url 'app:importstock' %}" key="t-default">Importation stock</a></li>
+                                                {% endif %}
+                                                <li><a href="{% url 'app:mouvement' %}" key="t-saas">Mouvements stock</a></li>
+                                                <li><a href="{% url 'app:inventaire' %}" key="t-saas">Inventaire</a></li>
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+
+                                        {% if perms.app.view_fournisseur or perms.app.view_marque %}
+                                        <li class="menu-title" key="t-menu">Gestion Fournisseur & Marque</li>
+            
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class='bx bxs-user-badge'></i>
+                                                <span key="t-dashboards">Module Frs & Marque</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                {% if perms.app.view_fournisseur %}
+                                                <li><a href="{% url 'app:fournisseur' %}" key="t-saas">Liste fournisseur</a></li>
+                                                {% endif %}
+                                                {% if perms.app.view_marque %}
+                                                <li><a href="{% url 'app:marque' %}" key="t-saas">Liste marque</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+
+                                        {% if perms.app.view_livraison %}
+                                        <li class="menu-title" key="t-menu">Gestion Livraison</li>
+            
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class='bx bx-cycling'></i>
+                                                <span key="t-dashboards">Module livraison</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                <li><a href="{% url 'app:livraison' %}" key="t-saas">Liste des livreurs</a></li>
+                                                <li><a href="{% url 'app:livraisonfrais' %}" key="t-saas">Frais de livraison</a></li>
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+
+                                        {% if perms.app.view_boutiques %}
+                                        <li class="menu-title" key="t-menu">Gestion Boutique</li>
+            
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class='bx bx-store-alt'></i>
+                                                <span key="t-dashboards">Module Boutique</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                <li><a href="{% url 'app:boutiques' %}" key="t-saas">Liste des boutiques</a></li>
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+
+                                        {% if perms.app.view_charge %}
+                                        <li class="menu-title" key="t-menu">Gestion Charges</li>
+                                        
+                                        
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class='bx bx-money'></i>
+                                                <span key="t-dashboards">Module Charges</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                <li><a href="{% url 'app:charge' %}" key="t-saas">Liste des Charges</a></li>
+                                                {% if perms.app.view_encaissement %}
+                                                <li><a href="{% url 'app:encaissement' %}" key="t-saas">Liste des Encaissements</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+
+                                        {% if perms.app.view_user %}
+                                        <li class="menu-title" key="t-menu">Gestion Moderateurs</li>
+            
+                                        <li>
+                                            <!--
+                                                counter bagde
+                                                <span class="badge rounded-pill bg-info float-end">04</span>
+                                            -->
+                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                                <i class='bx bx-user-voice'></i>
+                                                <span key="t-dashboards">Module Moderateurs</span>
+                                            </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                <li><a href="{% url 'app:moderateurs' %}" key="t-saas">Liste des Moderateurs</a></li>
+                                                <li><a href="{% url 'app:role' %}" key="t-saas">Liste des Roles</a></li>
+                                            </ul>
+                                        </li>
+                                        {% endif %}
+
+            
+                                    </ul>
+                                </div>
+                                <!-- Sidebar -->
+                            </div>
+                        </div>
+                        <!-- Left Sidebar End -->
+
+            
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+                        {% block body %}
+
+
+                        {% endblock body %}
+                    </div>
+                    <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> © Shippili
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Design & Develop by Digital up
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- Right Sidebar -->
+        <div class="right-bar">
+            <div data-simplebar class="h-100">
+                <div class="rightbar-title d-flex align-items-center px-3 py-4">
+            
+                    <h5 class="m-0 me-2">Settings</h5>
+
+                    <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
+                        <i class="mdi mdi-close noti-icon"></i>
+                    </a>
+                </div>
+
+                <!-- Settings -->
+                <hr class="mt-0" />
+                <h6 class="text-center mb-0">Choose Layouts</h6>
+
+                <div class="p-4">
+                    <div class="mb-2">
+                        <img src="assets/images/layouts/layout-1.jpg" class="img-thumbnail" alt="layout images">
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input theme-choice" type="checkbox" id="light-mode-switch" checked>
+                        <label class="form-check-label" for="light-mode-switch">Light Mode</label>
+                    </div>
+    
+                    <div class="mb-2">
+                        <img src="assets/images/layouts/layout-2.jpg" class="img-thumbnail" alt="layout images">
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch">
+                        <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
+                    </div>
+    
+                    <div class="mb-2">
+                        <img src="assets/images/layouts/layout-3.jpg" class="img-thumbnail" alt="layout images">
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input theme-choice" type="checkbox" id="rtl-mode-switch">
+                        <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
+                    </div>
+
+                    <div class="mb-2">
+                        <img src="assets/images/layouts/layout-4.jpg" class="img-thumbnail" alt="layout images">
+                    </div>
+                    <div class="form-check form-switch mb-5">
+                        <input class="form-check-input theme-choice" type="checkbox" id="dark-rtl-mode-switch">
+                        <label class="form-check-label" for="dark-rtl-mode-switch">Dark RTL Mode</label>
+                    </div>
+
+            
+                </div>
+
+            </div> <!-- end slimscroll-menu-->
+        </div>
+        <!-- /Right-bar -->
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+        <!-- JAVASCRIPT -->
+
+        <div class="modal fade" id="googlesheetmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Google Sheet Commande Importation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            
+                            <div class="form-group">
+                                <label for="boutiquePlace" class="control-label">Boutique</label>
+                                <br>
+                                <select id="boutiquePlace" class="form-select">
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">NOM DE FEUILLE</label>
+                                <input type="text" name="" id="sheet" class="form-control">
+                            </div>
+
+                            <div class="form-group required">
+                                <label for="clientPlace" class="control-label">Client</label>
+                                <select id="clientPlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailPlace" class="control-label">Email</label>
+                                <select id="emailPlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group required">
+                                <label for="telephonePlace" class="control-label">Telephone</label>
+                                <select id="telephonePlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="telephonetwoPlace" class="control-label">Telephone 2</label>
+                                <select id="telephonetwoPlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group required">
+                                <label for="wilayaPlace" class="control-label">Wilaya</label>
+                                <select id="wilayaPlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="communePlace" class="control-label">Commune</label>
+                                <select id="communePlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="adressePlace" class="control-label">Adresse</label>
+                                <select id="adressePlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="remarquePlace" class="control-label">Remarque</label>
+                                <select id="remarquePlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="methodePlace" class="control-label">Methode Livraison</label>
+                                <select id="methodePlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group required">
+                                <label for="produitPlace" class="control-label">Produit</label>
+                                <select id="produitPlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="optionPlace" class="control-label">Option</label>
+                                <select id="optionPlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="qtePlace" class="control-label">Qte</label>
+                                <select id="qtePlace" class="form-select">
+                                    <option value="100" selected>---</option>
+                                    <option value="0" >1</option>
+                                    <option value="1" >2</option>
+                                    <option value="2" >3</option>
+                                    <option value="3" >4</option>
+                                    <option value="4" >5</option>
+                                    <option value="5" >6</option>
+                                    <option value="6" >7</option>
+                                    <option value="7" >8</option>
+                                    <option value="8" >9</option>
+                                    <option value="9" >10</option>
+                                    <option value="10" >11</option>
+                                    <option value="11" >12</option>
+                                    
+                                </select>
+                            </div>
+
+                        </div>
+                        <br>
+
+                        <script>
+                            function sheet(){
+                                var name = document.getElementById('sheet');
+                                window.open('http://{{request.get_host}}/googleSheet/'+name.value);
+                            }
+                        </script>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-primary" onclick="sheet();">Importer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="shopifymodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>I will not close if you click outside me. Don't even try to press escape key.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Understood</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="{% static 'assets/libs/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'assets/libs/metismenu/metisMenu.min.js' %}"></script>
+        <script src="{% static 'assets/libs/simplebar/simplebar.min.js' %}"></script>
+        <script src="{% static 'assets/libs/node-waves/waves.min.js' %}"></script>
+
+        <!-- apexcharts -->
+        <script src="{% static 'assets/libs/apexcharts/apexcharts.min.js' %}"></script>
+
+        <!-- dashboard init -->
+        <script src="{% static 'assets/js/pages/dashboard.init.js' %}"></script>
+
+        <!-- App js -->
+        <script src="{% static 'assets/js/app.js' %}"></script>
+        <script src="{% static 'assets/js/dropzone.min.js' %}"></script>
+
+        <script>
+            function changer(){
+                var ider = document.getElementById("vertical-menu-btn").getAttribute('class');
+                console.log(ider);
+                if (ider == "sidebar-enable vertical-collpsed"){
+                    document.getElementById("vertical-menu-btn").setAttribute('class', '');
+
+                }
+                else {
+                    document.getElementById("vertical-menu-btn").setAttribute('class', 'sidebar-enable vertical-collpsed');
+                }
+            }
+        </script>
+
+    <link  rel="stylesheet" href="{% static 'assets/sweetalert.min.css' %}" />
+    <script src="{% static 'assets/sweetalert.min.js' %}"></script>
+
+    <script>
+        function editor(modal, form, pk){
+            window.open("http://{{request.get_host}}/editor/"+modal+"/"+form+"/"+pk);
+        }
+        function deleteme(url, pk) {
+    // window.open("http://{{request.get_host}}/commandedelete/"+pk, "_blank");
+  // placeholder for the executeExample until it's actually loaded
+  swal({
+      title: "Cette Action est irreversible !",
+      text: "Etes-vous sur de supprimez cette object ?",
+      icon: "warning",
+      buttons: [
+        'Non, Annuler',
+        'Oui, Confirmer !'
+      ],
+      dangerMode: true,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        swal({
+          title: 'Supprimer !',
+          text: 'Action Saisie',
+          icon: 'success'
+        }).then(function() {
+            window.open("http://{{request.get_host}}/deleter/"+url+"/"+pk, "_self");
+        });
+      } else {
+        swal("Action Annuler !", "Cancelled Action");
+      }
+    });
+};
+
+</script>
+        {% block jslib %}
+
+        {% endblock jslib %}
+        <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="{% static 'assets/libs/select2/js/select2.min.js' %}"></script>
+        <script>
+
+    $('#boutiquePlace').select2({
+        placeholder: 'Selectionnez un produit',
+        width: '100%',
+        dropdownParent: $('#googlesheetmodal'),
+        ajax: {
+            url: 'http://{{request.get_host}}/boutiquejson',
+            dataType: 'json'
+            // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+          }
+    });
+
+        </script>
+    
+
+    
+    </body>
+
+
+</html>

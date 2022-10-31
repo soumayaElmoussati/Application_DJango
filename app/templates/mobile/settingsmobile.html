@@ -1,0 +1,71 @@
+{% extends 'mobile/index.html' %}
+{% load static %}
+
+
+{% block mobilebody %}
+
+
+<div id="appCapsule">
+
+    <div class="section mt-3 text-center">
+        <div class="avatar-section">
+            <a href="#">
+                <img src="{{request.user.photo_profil.url}}" alt="avatar" class="imaged w100 rounded">
+            </a>
+        </div>
+    </div>
+
+    <div class="listview-title mt-1">Theme</div>
+
+    <ul class="listview image-listview text inset no-line">
+        <li>
+            <div class="item">
+                <div class="in">
+                    <div>
+                        Dark Mode
+                    </div>
+                    <div class="form-check form-switch  ms-2">
+                        <input class="form-check-input dark-mode-switch" type="checkbox" id="darkmodeSwitch">
+                        <label class="form-check-label" for="darkmodeSwitch"></label>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div class="listview-title mt-1">Information Personelle</div>
+
+    <ul class="listview image-listview text inset no-line">
+        <li>
+            <a href="{% url 'app:formsEditor' 'infoNomForm' %}" class="item">
+                <div class="in">
+                    <div>Modifiez Nom et prénom</div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'app:formsEditor' 'infoTelephoneForm' %}" class="item">
+                <div class="in">
+                    <div>Modifiez Numero telephone</div>
+                </div>
+            </a>
+        </li>
+    </ul>
+
+    <div class="listview-title mt-1">Securité</div>
+
+    <ul class="listview image-listview text inset no-line">
+
+        <li>
+            <a href="{% url 'app:formsEditor' 'infoEmailForm' %}" class="item">
+                <div class="in">
+                    <div>Modifiez Adresse Email</div>
+                </div>
+            </a>
+        </li>
+    </ul>
+
+</div>
+
+
+{% endblock mobilebody %}

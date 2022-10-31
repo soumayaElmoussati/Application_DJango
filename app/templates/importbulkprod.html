@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="card-title">Importation Produits</h4>
+                        <p class="card-title-desc">Module importation accepte les fichier excel format (csv, xlsx) seulement
+                        </p>
+                    </div>
+                 <div class="col-6">
+                    <a style="float: right;" href="{% url 'app:downloadfileproduct' %}" class="btn btn-success">Telecharger le Modele</a>
+
+                 </div>
+
+                </div>
+                
+               
+
+                <div>
+                    {% if perms.app.add_product %}
+                    <form enctype='multipart/form-data' method='POST' class="dropzone" id="my-great-dropzone">
+                        {% csrf_token %}
+
+                        <input type="file" name="file" id="file" accept="xlsx">
+             
+                        <div class="dz-message needsclick">
+                            <div class="mb-3">
+                                <i class="display-4 text-muted bx bxs-cloud-upload"></i>
+                            </div>
+                            
+                            <h4>Glisser ou selectionez le ficher</h4>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Validez</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                    {% if uploaded_file_url %}
+                    <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+                  {% endif %}
+                </div>
+
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+{% endblock body %}

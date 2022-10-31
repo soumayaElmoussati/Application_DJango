@@ -1,0 +1,264 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Shippili</title>
+    <meta name="description" content="Finapp HTML Mobile Template">
+    <meta name="keywords"
+        content="bootstrap, wallet, banking, fintech mobile template, cordova, phonegap, mobile, html, responsive" />
+    <link rel="icon" type="image/png" href="{% static 'mobile/assets/img/favicon.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'mobile/assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'mobile/assets/css/style.css' %}">
+    <link rel="manifest" href="{% static 'mobile/__manifest.json' %}">
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'mobile/assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+
+    {% if request.path == "/mainmobile" %}
+    <!-- App Header -->
+    <div class="appHeader bg-primary text-light">
+        <div class="left">
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            Shippili Livraison
+        </div>
+        <div class="right">
+            <a href="{% url 'app:scannercommande' %}" class="headerButton">
+                <ion-icon name="qr-code-outline" role="img" class="md hydrated" aria-label="qr code outline"></ion-icon>
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="appHeader">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline" role="img" class="md hydrated" aria-label="chevron back outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">Shippili Livraison</div>
+        <div class="right">
+            <a href="{% url 'app:scannercommande' %}" class="headerButton">
+                <ion-icon name="qr-code-outline" role="img" class="md hydrated" aria-label="qr code outline"></ion-icon>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% block mobilebody %}
+
+    {% endblock mobilebody %}
+
+
+    <!-- App Bottom Menu -->
+    <div class="appBottomMenu">
+        <a href="{% url 'app:mainmobile' %}" class="item {% if nbar == 'dashboard' %} active {% endif %}">
+            <div class="col">
+                <ion-icon name="pie-chart-outline"></ion-icon>
+                <strong>Dashboard</strong>
+            </div>
+        </a>
+        <a href="{% url 'app:commandetotal' %}" class="item {% if nbar == 'commande' %} active {% endif %}">
+            <div class="col">
+                <ion-icon name="document-text-outline"></ion-icon>
+                <strong>Commande</strong>
+            </div>
+        </a>
+        <a href="{% url 'app:settingsmobile' %}" class="item {% if nbar == 'profil' %} active {% endif %}">
+            <div class="col">
+                <ion-icon name="person-outline"></ion-icon>
+                <strong>Profil</strong>
+            </div>
+        </a>
+    </div>
+    <!-- * App Bottom Menu -->
+
+    <!-- App Sidebar -->
+    <div class="modal fade panelbox panelbox-left" id="sidebarPanel" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <!-- profile box -->
+                    <div class="profileBox pt-2 pb-2">
+                        <div class="image-wrapper">
+                            <img src="{{request.user.photo_profil.url}}" alt="image" class="imaged  w36">
+                        </div>
+                        <div class="in">
+                            <strong>{{request.user.nom}}</strong>
+                            
+                        </div>
+                        <a href="#" class="btn btn-link btn-icon sidebar-close" data-bs-dismiss="modal">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </a>
+                    </div>
+                    <!-- * profile box -->
+
+
+                    <!-- action group -->
+                    <div class="action-group">
+                        <h3 class="mt-2 text-white">Salut {{request.user}} !</h3>
+                    </div>
+                    <!-- * action group -->
+
+                    <!-- menu -->
+                    <div class="listview-title mt-1">Menu</div>
+                    <ul class="listview flush transparent no-line image-listview">
+                        <li>
+                            <a href="{% url 'app:mainmobile' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="pie-chart-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Dashboard
+                                    
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="app-pages.html" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="document-text-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Commande
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="app-components.html" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="apps-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Commande en Retour
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- * menu -->
+
+                    <!-- others -->
+                    <div class="listview-title mt-1">Autres</div>
+                    <ul class="listview flush transparent no-line image-listview">
+                        <li>
+                            <a href="{% url 'app:settingsmobile' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="settings-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Paramètre
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'app:logoutmobile' %}" class="item">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Se Déconnecter
+                                </div>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                    <!-- * others -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * App Sidebar -->
+
+
+<!-- android style 4 -->
+<div id="offline" class="notification-box">
+    <div class="notification-dialog android-style">
+        <div class="notification-content">
+            <div class="in">
+                <h3 class="subtitle">Pas d'acces internet</h3>
+                <div class="text">
+                    Veuillez retablir votre connexion
+                </div>
+            </div>
+            <div class="icon-box text-danger">
+                <ion-icon name="cloud-offline-outline"></ion-icon>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * android style 4 -->
+
+<!-- android style 4 -->
+<div id="online" class="notification-box">
+    <div class="notification-dialog android-style">
+        <div class="notification-content">
+            <div class="in">
+                <h3 class="subtitle">Acces internet</h3>
+                <div class="text">
+                    Connexion retabli !
+                </div>
+            </div>
+            <div class="icon-box text-success">
+                <ion-icon name="cloud-done-outline"></ion-icon>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * android style 4 -->
+
+
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'mobile/assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'mobile/assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Qr Scanner -->
+    <script src="{% static 'mobile/assets/js/plugins/qrscanner/html5-qrcode.min_.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'mobile/assets/js/base.js' %}"></script>
+
+    <script>
+        // Add to Home with 2 seconds delay.
+        AddtoHome("2000", "once");
+
+        window.addEventListener("load", () => {
+            function handleNetworkChange(event) {
+            if (navigator.onLine) {
+                notification('online')
+            } else {
+                notification("offline");   
+            }
+            }
+            window.addEventListener("online", handleNetworkChange);
+            window.addEventListener("offline", handleNetworkChange);
+        });
+
+    </script>
+
+</body>
+
+</html>

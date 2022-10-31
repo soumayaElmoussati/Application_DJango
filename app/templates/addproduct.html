@@ -1,0 +1,287 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block csslib %}
+
+<link href="{% static 'assets/libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+
+{% endblock csslib %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Ajoute Produit</h4>
+
+                <div id="basic-example">
+                    <!-- Seller Details -->
+                    <section>
+                        {% if perms.app.add_product %}
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="container-fluid">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        {% bootstrap_field form.boutique %}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.nom_francais field_class='col-12' %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.nom_arabe field_class='col-12 ' %}
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.reference field_class='col-12' %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.code_barre field_class='col-12 ' %}
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.marque field_class='col-12' %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.fournisseur field_class='col-12 ' %}
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.reduction field_class='col-12' %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.prix_promo field_class='col-12 ' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.produit_avec_option field_class='col-12' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.prix_vente field_class='col-12' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.prix_option field_class='col-12' %}
+                                    </div>
+
+                                </div>
+
+                                
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.alert_rupture field_class='col-12' %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.minimum_stock_alert field_class='col-12 ' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.is_Active field_class='col-12' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.tarifs_livraison field_class='col-12' %}
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.image_1 field_class='col-12' %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.image_2 field_class='col-12 ' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.image_3 field_class='col-12' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.image_4 field_class='col-12' %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.image_5 field_class='col-12' %}
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.image_6 field_class='col-12' %}
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-12">
+                                        {% bootstrap_field form.json_tarifs field_class='col-12 d-none' show_label=False %}
+                                    </div>
+                                    
+                                    <div class="col-md-12 col-sm-12">
+                                        {% bootstrap_field form.wilayas field_class='col-12' %}
+                                    </div>
+
+                                </div>
+
+                                <div class="container-fluid">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-4 d-inline">
+                                            <label for="">WILAYA</label>
+                                        </div>
+                                        <div class="col-3 d-inline">
+                                            <label for="">FRAIS A DOMICILE</label>
+                                        </div>
+                                        <div class="col-3 d-inline">
+                                            <label for="">FRAIS STOP DESK</label>
+                                        </div> 
+                                    </div>
+                                </div>
+
+                                <div class="container-fluid" id="handler">
+
+                                </div>
+                                <br>
+                                {% buttons %}
+                                    <button type="reset" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                                {% endbuttons %}
+
+                            </div>
+
+                        </form>
+                        {% endif %}
+
+                    </section>
+
+                </div>
+
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>
+
+{% endblock body %}
+
+
+{% block jslib %}
+
+<script src="static/assets/libs/jquery/jquery.min.js"></script>
+<script src="static/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/assets/libs/metismenu/metisMenu.min.js"></script>
+<script src="static/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="static/assets/libs/node-waves/waves.min.js"></script>
+<script src="static/assets/libs/select2/js/select2.min.js"></script>
+<!-- jquery step -->
+<script src="static/assets/libs/jquery-steps/build/jquery.steps.min.js"></script>
+
+<!-- form wizard init -->
+<script src="static/assets/js/pages/form-wizard.init.js"></script>
+
+<script src="static/assets/js/app.js"></script>
+
+<script>
+
+
+$(document).ready(function() {
+    $('#id_boutique').select2();
+});
+
+$(document).ready(function() {
+    $('select').select2();
+});
+
+var indexer = 0;
+var jsonLivraison = null;
+function fraisLivraisonJson(){
+
+indexer = indexer + 1;
+const b = document.getElementById("handler");
+b.innerHTML = b.innerHTML + "<div id=\"fraislivraison"+indexer+"\"> <input type=\"text\" name=\"fraislivraison"+indexer+"\" id=\"wilayafraislivraison"+indexer+"\" class=\"form-control col-3\" value=\"\"> <input type=\"text\" name=\"tarifsdomicile"+indexer+"\" id=\"tarifsdomicile"+indexer+"\" class=\"form-control col-3\" value=\"\"> <input type=\"text\" id=\"tarifsstopdesk\" name=\"tarifsstopdesk"+indexer+"\" class=\"form-control col-2\" style=\"width: 15px; height: 15px;\"> </div>"
+
+}
+
+$(document.body).on("change","#id_wilayas",function(){
+
+    jsonLivraison = $("#id_wilayas").select2('data');
+    $('#id_json_tarifs').val(jsonLivraison);
+
+    const b = document.getElementById("handler");
+    b.innerHTML = "";
+
+    for (var i = 0; i<jsonLivraison.length; i++){
+        
+        b.innerHTML = b.innerHTML + "<br> <div class=\"row\" id=\"fraislivraison"+i+"\"> <div class=\"col-4 d-inline\"> <input type=\"text\" name=\"fraislivraison"+i+"\" id=\"wilayafraislivraison"+i+"\" class=\"form-control\" disabled value=\""+jsonLivraison[i].text+"\"> </div> <div class=\"col-3 d-inline\"> <input type=\"text\" name=\"tarifsdomicile"+i+"\" id=\"tarifsdomicile"+i+"\" class=\"form-control\" value=\"\"> </div> <div class=\"col-3 d-inline\"> <input type=\"text\" id=\"tarifsstopdesk"+i+"\" name=\"tarifsstopdesk"+i+"\" class=\"form-control\"> </div> </div> <br>"
+
+    }
+
+
+});
+
+//json render frais 
+
+var values = [];
+
+function renderJsonField(){
+    values = [];
+    var indexer = 0;
+
+    var counter = $("#id_wilayas").select2('data');
+
+    for (i = 0; i < counter.length; i++){
+
+        $("#fraislivraison"+i).each(function(){
+            values.push(
+            { 
+                value: {
+                    wilaya : $("#wilayafraislivraison"+i).val(),
+                    tarifs_domicile : $("#tarifsdomicile"+i).val(),
+                    tarifs_stopdesk: $("#tarifsstopdesk"+i).val()
+                }
+            }
+            ); 
+        });
+    }
+
+    $('#id_json_tarifs').val(JSON.stringify(values));
+
+}
+
+setInterval(renderJsonField, 1000);
+
+    //ajoute field livraison tarif a domicile , stop desk
+
+
+</script>
+
+{% endblock jslib %}

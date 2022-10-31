@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block csslib %}
+
+<link href="{% static 'assets/libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock csslib %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Modifiez {{nbar}}</h4>
+
+                <div id="basic-example">
+                    <!-- Seller Details -->
+                    <section>
+                        <form method="POST" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            {% buttons %}
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                            {% endbuttons %}
+                       
+                        </form>
+                    </section>
+
+                </div>
+
+            </div>
+            <!-- end card body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>
+
+{% endblock body %}
+
+
+
+{% block jslib %}
+
+
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="{% static 'assets/libs/select2/js/select2.min.js' %}"></script>
+
+<script>
+    $('select').select2({
+        width: '100%'
+    });
+</script>
+
+{% endblock jslib %}

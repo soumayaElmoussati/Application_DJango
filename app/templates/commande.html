@@ -1,0 +1,309 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block csslib %}
+
+<link href="{% static 'assets/libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock csslib %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Ajoute Commande</h4>
+                <p class="card-title-desc">
+                </p>
+                <div id="dataclient" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed">
+           
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% if perms.app.add_commande %}
+                            <form method="POST" id="commandeform">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <h3 style="text-decoration:underline;">INFORMATION GENERAL</h3>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.client %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.boutique %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.email %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.telephone %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.telephone_second %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.wilaya %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.commun %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.adresse %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.referent %}
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% bootstrap_field formCommande.livreur %}
+                                    </div>
+
+
+                                </div>
+                                
+                                <br>
+
+                                <div class="row">
+                                    <h3 style="text-decoration:underline;">CONSTITUTION DE COMMANDE</h3>
+                                </div>
+
+                                <div class="row products">
+                           
+                                    <div class="col-12 object row">
+
+                                        <div class="col-3 d-inline">
+                                            <label for="produits">Produit</label>
+                                            <select class="form-select produits" id="id_produits_1_set">
+                                            
+                                            </select>
+                                        </div>
+    
+
+    
+                                        <div class="col-2 d-inline">
+                                            <label for="prix">Prix</label>
+
+                                            <input type="number" class="form-control prix" id="id_prix_1_set">
+                                      
+                                        </div>
+    
+                                        <div class="col-2 d-inline">
+                                            <label for="qte">Qte</label>
+    
+                                    
+                                                <input type="number" class="form-control qte" id="id_qte_1_set">
+                                          
+                                        </div>
+    
+                                   
+    
+                                    </div>
+                                </div>
+                                <br>
+                                
+                                <div class="row">
+                                    <h3 style="text-decoration:underline;">TOTAL</h3>
+                                </div>
+                                <br>
+                                
+                                <div class="row">
+
+                                    <div class="col-4"></div>
+
+                                    <div class="col-4">
+                                        <div class="card bg-info text-white-50">
+                                            <div class="card-body">
+                                                <table>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><label for="sous-total" class="mr-4">SOUS-TOTAL</label></td>
+                                                            <td>{% bootstrap_field formCommande.sous_total show_label=False %}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label for="livraison" class="mr-4">LIVRAISON</label></td>
+                                                            <td>{% bootstrap_field formCommande.livraison show_label=False %}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label for="reduction" class="mr-4">REDUCTION</label></td>
+                                                            <td>{% bootstrap_field formCommande.reduction show_label=False %}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label for="echange" class="mr-4">ECHANGE</label></td>
+                                                            <td>{% bootstrap_field formCommande.echange show_label=False %}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label for="total" class="mr-4">TOTAL</label></td>
+                                                            <td>{% bootstrap_field formCommande.total show_label=False %}</td>
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                                {% bootstrap_field formCommande.statut %}
+                                                <br>
+                                                {% bootstrap_field formCommande.mode %}
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-4"></div>
+
+                                    <br>
+                                    
+                                    <div class="row">
+
+                                        <div class="col-4"></div>
+
+                                        <div class="col-4">
+
+                                            
+                    {% buttons %}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                {% endbuttons %}
+
+
+                                        </div>
+
+                                        <div class="col-4"></div>
+
+                                    </div>
+
+                                </div>
+                                {% bootstrap_field formCommande.json_products field_class='d-none' show_label=False %}
+                                    
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+</div>
+
+{% endblock body %}
+
+
+
+{% block jslib %}
+
+
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="{% static 'assets/libs/select2/js/select2.min.js' %}"></script>
+
+
+<script>
+    $('#id_client').select2({
+        placeholder: 'Selectionnez un client',
+    });
+
+    var total = 2;
+    $( ".add" ).click(function() {
+        console.log("clicked");
+        var cloner = $( ".object" ).last().clone();
+
+        //produits adder
+        cloner.find('select.produits').each(function() {
+            $(this).attr({'name': ('produits_'+total+'_set'), 'id': 'id_produits_'+total+'_set'});
+            
+        });
+
+        // prix adder
+
+        cloner.find('input.prix').each(function() {
+            $(this).attr({'name': ('prix_'+total+'_set'), 'id': 'id_prix_'+total+'_set'});
+            
+        });
+
+        // prix adder
+
+        cloner.find('input.qte').each(function() {
+            $(this).attr({'name': ('qte_'+total+'_set'), 'id': 'id_qte_'+total+'_set'});
+            
+        });
+        total = total +1;
+        cloner.appendTo( ".products" );
+    });
+
+    $(".remove").click(function() {
+        $(this).closest('div.object').remove();
+    });    
+
+
+    //2select initialise
+
+    {% autoescape off %}
+    var dataprod = {{dataproduits}};
+    {% endautoescape %}
+
+    $('.produits').select2({
+        placeholder: 'Selectionnez un produit',
+        data: dataprod
+    });
+    
+    //sum calculator
+    var arrayProd = [];
+    var intervalId = window.setInterval(function(){
+        
+        var numItems = $('.produits').length;
+        var arrayProd = [];
+        for(var i = 1; i<=numItems; i++){
+            var obj = new Object();
+            // produit id
+            obj.produits = $('#id_produits_'+i+'_set').val();
+            // prix
+            obj.prix = $('#id_prix_'+i+'_set').val();
+            //qte
+            obj.qte = $('#id_qte_'+i+'_set').val();
+
+            arrayProd.push(obj);
+        }
+        
+        var total = 0;  
+        
+        for (var i = 0; i < arrayProd.length; i++){
+            
+            total = total + (arrayProd[i]['prix']*arrayProd[i]['qte']);
+        }
+        
+        $('#id_sous_total').val(total);
+        
+        var livraison = $('#id_livraison').val();
+        var reduction = $('#id_reduction').val();
+        $('#id_total').val((parseFloat(total)+parseFloat(livraison))-reduction);
+        document.getElementById('id_json_products').value = JSON.stringify(arrayProd);
+        
+    }, 2000);
+
+
+    //submit form json generator
+
+    $('#submit').click(function() {
+
+
+        
+
+        document.getElementById('clickme').click();
+
+    });
+
+</script>
+
+{% endblock jslib %}
+
+

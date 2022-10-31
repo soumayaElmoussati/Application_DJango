@@ -1,0 +1,109 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Finapp</title>
+    <meta name="description" content="Shippili">
+    <meta name="keywords" content="bootstrap, wallet, banking, fintech mobile template, cordova, phonegap, mobile, html, responsive" />
+    <link rel="icon" type="image/png" href="{% static 'mobile/assets/img/favicon.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'mobile/assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'mobile/assets/css/style.css' %}">
+    <link rel="manifest" href="{% static 'mobile/__manifest.json' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <img src="{% static 'mobile/assets/img/loading-icon.png' %}" alt="icon" class="loading-icon">
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader no-border transparent position-absolute">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle"></div>
+        <div class="right">
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section mt-2 text-center">
+            <h1>Log in</h1>
+            <h4>Bienvenue !</h4>
+        </div>
+        <div class="section mb-5 p-2">
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="card">
+                    <div class="card-body pb-1">
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="email1">Username</label>
+                                <input type="text" class="form-control" id="email1" placeholder="Username" name="username">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label" for="password1">Password</label>
+                                <input type="password" class="form-control" id="password1" autocomplete="off" placeholder="Password" name="password">
+                                <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-links mt-2">
+    
+                    <div><a href="app-forgot-password.html" class="text-muted">Mot de pass oublié ?</a></div>
+                </div>
+
+                <div class="form-button-group  transparent">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Se Connectez</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    <!-- * App Capsule -->
+
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'mobile/assets/js/lib/bootstrap.bundle.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <!-- Splide -->
+    <script src="{% static 'mobile/assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'mobile/assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>

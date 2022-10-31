@@ -1,0 +1,166 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block csslib %}
+
+<link href="{% static 'assets/libs/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
+<link href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock csslib %}
+
+
+{% block body %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Role</h4>
+                <button type="button" class="btn btn-success waves-effect waves-light pr-0" data-bs-toggle="modal" data-bs-target=".bs-example-modal-sm">Ajouter</button>
+
+                <p class="card-title-desc">
+                </p>
+                {% if perms.app.view_group %}
+                <div id="dataclient" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed">
+           
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="datatable" class="table table-bordered dt-responsive" role="grid" aria-describedby="datatable-buttons_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Nom</th>
+                                        {% if perms.app.edit_group %}
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Modifier</th>
+                                        {% endif %}
+                                        {% if perms.app.delete_group %}
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Supprimer</th>
+                                        {% endif %}
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for c in data %}
+                                
+                                    <tr>
+                                        <td>{{c.name}}</td>
+                                        {% if perms.app.edit_group %}
+                                        <td> <a href="#" onclick="editor('Group', 'UserGroupForm', '{{c.pk}}')" class="btn btn-info"><i class="bx bx-edit-alt"></i></a></td>
+                                        {% endif %}
+                                        {% if perms.app.delete_group %}
+                                        <td> <a href="#" onclick="deleteme('Group', '{{c.pk}}')" class="btn btn-danger"><i class="bx bx-trash-alt"></i></a></td>
+                                        {% endif %}
+
+                                    </tr>
+                                    {% endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+            
+</div>
+
+
+
+
+<div class="modal fade bs-example-modal-sm" id="modalId" tabindex="-1" role="dialog" aria-labelledby="ajouter mouvement" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mySmallModalLabel">Ajouter Role</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <br>
+
+                    {% buttons %}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    {% endbuttons %}
+               
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock body %}
+
+
+
+{% block jslib %}
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="{% static 'assets/libs/select2/js/select2.min.js' %}"></script>
+
+<script>
+    $('select').select2({
+        width: '100%',
+        dropdownParent: $('#modalId')
+    });
+</script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src=" https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.print.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#datatable').DataTable({
+            responsive: true,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        'pdf',
+                        'print'
+                    ]
+                }
+            ]
+            // language: {
+            //     "decimal": "",
+            //     "emptyTable": "No hay información",
+            //     "info": "Mostrando _START_ a _END_ de _TOTAL_ Documentos",
+            //     "infoEmpty": "Mostrando 0 to 0 of 0 Documentos",
+            //     "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            //     "infoPostFix": "",
+            //     "thousands": ",",
+            //     "lengthMenu": "Mostrar _MENU_ Documentos",
+            //     "loadingRecords": "Cargando...",
+            //     "processing": "Procesando...",
+            //     "search": "Buscar:",
+            //     "zeroRecords": "Sin resultados encontrados",
+            //     "paginate": {
+            //         "first": "Primero",
+            //         "last": "Ultimo",
+            //         "next": "Siguiente",
+            //         "previous": "Anterior"
+            //     }
+            // }
+        });
+    });
+</script>
+
+
+{% endblock jslib %}

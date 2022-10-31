@@ -1,0 +1,120 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block csslib %}
+
+<link href="static/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock csslib %}
+
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="card-title">Importation Stock</h4>
+                        <p class="card-title-desc">Module importation accepte les fichier excel format (csv, xlsx) seulement
+                        </p>
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                    </div>
+                 <div class="col-6">
+                    <a style="float: right;" href="{% url 'app:downloadstockmodel' %}" class="btn btn-success">Telecharger le Modele</a>
+
+                 </div>
+
+                </div>
+                
+               
+                <div>
+                    {% if perms.app.add_mouvement %}
+                    <form action="{% url 'app:importstock' %}" method="POST" class="dropzone" enctype="multipart/form-data" id="my-dropzone">
+                        {% csrf_token %}
+                        
+                            <input id='submit-all' type="file" name="bulkfile">
+                
+                        <div class="dz-message needsclick">
+                            <div class="mb-3">
+                                <i class="display-4 text-muted bx bxs-cloud-upload"></i>
+                            </div>
+                            
+                            <h4>Glisser le fichier ici.</h4>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light" id="submitBtn">Valider</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+
+
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+
+
+{% endblock body %}
+
+{% block jslib %}
+
+<script src="static/assets/libs/dropzone/min/dropzone.min.js"></script>
+<script type='text/javascript'>
+
+    Dropzone.options.myDropzone = {
+
+        autoProcessQueue: false,
+    
+        init : function() {
+            var submitButton = document.querySelector("#submitBtn")
+            myDropzone = this;
+            submitButton.addEventListener("click", function() {
+                myDropzone.processQueue();
+            });
+            this.on("addedfile", function() {
+                document.getElementById('submitBtn').style.visibility = "visible";
+            });
+    
+            this.on('addedfile', function(){
+                if (this.files[1]!=null){
+                    this.removeFile(this.files[0]);
+                }
+            });
+    
+    
+        }
+    };
+    
+    Dropzone.options.myAwesomeDropzone = {
+      accept: function(file, done) {
+        console.log("uploaded");
+    
+      },
+      init: function() {
+        this.on("addedfile", function() {
+          if (this.files[1]!=null){
+            this.removeFile(this.files[0]);
+            //document.getElementById('submitBtn').style.visibility = "visible";
+          }
+        });
+      }
+    
+    
+    };
+    </script>
+
+{% endblock jslib %}

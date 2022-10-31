@@ -1,0 +1,79 @@
+{% extends 'mobile/index.html' %}
+{% load static %}
+
+
+{% block mobilebody %}
+
+
+<div id="appCapsule">
+
+    <!-- Wallet Card -->
+    <div class="section wallet-card-section pt-1">
+        <div class="wallet-card">
+            <!-- Balance -->
+            <div class="balance">
+                <div class="left">
+                    <span class="title">Total Commande</span>
+                    <h1 class="total">{{totalcommande}}</h1>
+                </div>
+                <div class="right">
+                    <a href="{% url 'app:commandetotal' %}" class="button">
+                        <ion-icon name="eye-outline" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+                    </a>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    <!-- Wallet Card -->
+
+
+    <!-- Stats -->
+    <div class="section">
+        <div class="row mt-2">
+            <div class="col-6">
+                <div class="stat-box">
+                    <a href="{% url 'app:commandefiltred' 'livree' %}">
+                        <div class="title">Livré</div>
+                        <div class="value text-success">{{e}}</div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="stat-box">
+                    <a href="{% url 'app:commandefiltred' 'en_livraison' %}">
+                        <div class="title">En Livraison</div>
+                        <div class="value text-primary">{{d}}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-6">
+                <div class="stat-box">
+                    <a href="{% url 'app:commandefiltred' 'en_retour' %}">
+                        <div class="title">En Retour</div>
+                        <div class="value text-warning">{{f}}</div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="stat-box">
+                    <a href="{% url 'app:commandefiltred' 'annuler' %}">
+                        <div class="title">Annuler</div>
+                        <div class="value text-danger">{{g}}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * Stats -->
+
+    
+
+
+
+</div>
+
+
+{% endblock mobilebody %}

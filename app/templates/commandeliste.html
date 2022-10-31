@@ -1,0 +1,137 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block csslib %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
+<link href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+{% endblock csslib %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Commande {{mode}}</h4>
+
+                <p class="card-title-desc">
+                </p>
+                <div id="dataclient" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline collapsed">
+           
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="datatable" class="table table-bordered dt-responsive" role="grid" aria-describedby="datatable-buttons_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >ID</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Date</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Client</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Telephone</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Statut</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Mode Livraison</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Processus</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Recu</th>
+                                        {% if perms.app.edit_commande %}
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >modifiez</th>
+                                        {% endif %}
+                                        {% if perms.app.delete_commande %}
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >supp</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for c in data %}
+                                
+                                    <tr>
+                                        <td>{{c.pk}}</td>
+                                        <td>{{c.date  | date:"d-m-Y | H:i"}}</td>
+                                        <td>{{c.client}}</td>
+                                        <td>{{c.telephone}}</td>
+                                        <td>{{c.statut}}</td>
+                                        <td>{{c.methode_livraison}}</td>
+                                        <td>{{c.mode}}</td>
+                                        <td><a href="{% url 'app:commandePdf' c.pk %}" class="btn btn-warning"><i class="bx bxs-file-pdf"></i></a></td>
+                                        {% if perms.app.edit_commande %}
+                                        <td> <a href="#" onclick="editor('Commande', 'commandeEditForm', '{{c.pk}}')" class="btn btn-info"><i class="bx bx-edit-alt"></i></a></td>
+                                        {% endif %}
+                                        {% if perms.app.delete_commande %}
+                                        <td> <a href="#" onclick="deleteme('Commande', '{{c.pk}}')" class="btn btn-danger"><i class="bx bx-trash-alt"></i></a></td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor%}
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+</div>
+
+
+{% endblock body %}
+
+
+
+{% block jslib %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src=" https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.print.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#datatable').DataTable({
+            responsive: true,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        'pdf',
+                        'print'
+                    ]
+                }
+            ],
+            language: {
+                "decimal": "",
+                "emptyTable": "Pas d'informatiom à affichier",
+                "info": "Page _START_ a _END_ de _TOTAL_ Pages",
+                "infoEmpty": "Page 0 a 0 sur 0 Pages",
+                "infoFiltered": "(Filtrage de _MAX_ total Entrez)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Page _MENU_ Page",
+                "loadingRecords": "Chargement ...",
+                "processing": "Chargement ...",
+                "search": "Recherche : ",
+                "zeroRecords": "Pas de resulta ",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Precedent"
+                }
+            }
+        });
+    });
+</script>
+{% endblock jslib %}

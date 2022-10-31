@@ -1,0 +1,33 @@
+{% extends 'mobile/index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+
+{% block mobilebody %}
+
+
+<div id="appCapsule">
+
+    <div class="section mt-2">
+        <div class="section-title">Commande {{tracking}}</div>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <br>
+                    {% buttons %}
+                        <button type="button" class="btn btn-secondary ml-0">Annuler</button>
+                        <button type="submit" class="btn btn-primary mr-0">Enregistrer</button>
+                    {% endbuttons %}
+                
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock mobilebody %}

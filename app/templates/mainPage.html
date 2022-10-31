@@ -1,0 +1,778 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block csslib %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
+<link href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+
+{% endblock csslib %}
+
+
+{% block body %}
+
+{% if request.user.is_superuser %}
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body" style="position: relative;">
+                <h4 class="card-title mb-4">Personaliser le filtrage </h4>
+
+                <div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="formRadios" id="formRadios2" value="semaine">
+                        <label class="form-check-label" for="formRadios2">
+                            7 JOURS PRECEDENT
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="formRadios" id="formRadios2" value="mois">
+                    <label class="form-check-label" for="formRadios2">
+                        30 JOURS PRECEDENT
+                    </label>
+                    </div>
+
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="formRadios" id="formRadios2" value="ans" checked>
+                    <label class="form-check-label" for="formRadios2">
+                        12 MOIS PRECEDENT
+                    </label>
+                    </div>
+
+                    <br>
+                    
+                    <div class="form-check">
+
+                        <button type="button" onclick="analit()" class="btn btn-success waves-effect btn-label waves-light"><i class="bx bx-check-double label-icon"></i> VALIDER
+                        </button>
+
+                        <button type="button" onclick="window.print();" class="btn btn-info waves-effect btn-label waves-light"><i class="bx bx-printer label-icon"></i> IMPRESSION
+                        </button>
+
+                    </div>
+
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body" style="position: relative;">
+                <h4 class="card-title mb-4">Anomalie</h4>
+                <div id="radial_chart" class="apex-charts" dir="ltr" style="min-height: 348.7px;">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="row">
+
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body" style="position: relative;">
+                <h4 class="card-title mb-4">Analyse Commande</h4>
+                
+                <div id="mixed_chart" class="apex-charts" dir="ltr" style="min-height: 365px;">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body" style="position: relative;">
+                <h4 class="card-title mb-4">Analyse Confirmation & Encaissement</h4>
+                
+                <div id="column_chart" class="apex-charts" dir="ltr" style="min-height: 365px;">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body" style="position: relative;">
+                <h4 class="card-title mb-4">Statistique Produits</h4>
+                
+                <div>
+                    <table id="datatable" class="table table-bordered dt-responsive" role="grid" aria-describedby="datatable-buttons_info">
+                        <thead>
+                            <tr role="row">
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >Produit</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >refer</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Commande</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Annuler</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Conrifmation</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Preparation</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Dispatch</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Livraison</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Livré</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-buttons" rowspan="1" colspan="1" >T.Retour</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock body %}
+
+
+
+
+
+{% block jslib %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src=" https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.print.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#datatable').DataTable({
+            ajax: '../statisprod',
+            responsive: true,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [
+                        'copy',
+                        'excel',
+                        'csv',
+                        'pdf',
+                        'print'
+                    ]
+                }
+            ],
+            language: {
+                "decimal": "",
+                "emptyTable": "Pas d'informatiom à affichier",
+                "info": "Page _START_ a _END_ de _TOTAL_ Pages",
+                "infoEmpty": "Page 0 a 0 sur 0 Pages",
+                "infoFiltered": "(Filtrage de _MAX_ total Entrez)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Page _MENU_ Page",
+                "loadingRecords": "Chargement ...",
+                "processing": "Chargement ...",
+                "search": "Recherche : ",
+                "zeroRecords": "Pas de resulta ",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Precedent"
+                }
+            }
+        });
+    });
+</script>
+
+        <!-- apexcharts -->
+        <script src="{% static 'assets/libs/apexcharts/apexcharts.min.js' %}"></script>
+
+        <!-- apexcharts init src="{% static 'assets/js/pages/apexcharts.init.js' %}" -->
+        {% if analytics == 'ans' %}
+        <script>
+
+                // commande performance chart
+
+                var options = {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: !1,
+                    toolbar: {
+                        show: !1
+                    }
+                },
+                stroke: {
+                    width: [0, 2, 4],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                colors: ["#f46a6a", "#556ee6", "#34c38f"],
+                series: [{
+                    name: "Commande Crée",
+                    type: "area",
+                    data: {{c_Cree}}
+                }, {
+                    name: "Commande Livrée",
+                    type: "column",
+                    data: {{c_Livrer}}
+                }, {
+                    name: "Commande en retour",
+                    type: "column",
+                    data: {{c_Retour}}
+                }],
+                fill: {
+                    opacity: [.85, .25, 1],
+                    gradient: {
+                        inverseColors: !1,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: .85,
+                        opacityTo: .55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points"
+                    }
+                },
+                tooltip: {
+                    shared: !0,
+                    intersect: !1,
+                    y: {
+                        formatter: function(e) {
+                            return void 0 !== e ? e.toFixed(0) + " points" : e
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: "#f1f1f1"
+                }
+                }
+                var chart = new ApexCharts(document.querySelector("#mixed_chart"), options);
+                chart.render();
+
+
+                // anomalie chart
+
+
+                var options = {
+                    chart: {
+                        height: 370,
+                        type: "radialBar"
+                    },
+                    plotOptions: {
+                        radialBar: {
+                            dataLabels: {
+                                name: {
+                                    fontSize: "22px"
+                                },
+                                value: {
+                                    fontSize: "16px"
+                                },
+                                total: {
+                                    show: !0,
+                                    label: "Total",
+                                    formatter: function(e) {
+                                        return {{totalCommande}}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    series: {{anomalie}},
+                    labels: ["En Confirmation", "En Preparation", "En Dispatch", "En Livraison", "Livrée", "En Retour"],
+                    colors: ["#556ee6", "#34c38f", "#f46a6a", "#f1b44c"]
+                    }
+                var chart = new ApexCharts(document.querySelector("#radial_chart"), options);
+                chart.render();
+
+
+                // encaissement et confirmation performance chart
+
+                var options = {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: !1,
+                    toolbar: {
+                        show: !1
+                    }
+                },
+                stroke: {
+                    width: [0, 2, 4],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                colors: ["#1DCD65", "#651DCD"],
+                series: [{
+                    name: "Commande Confirmer",
+                    type: "area",
+                    data: {{c_confirm}}
+                }, {
+                    name: "Commande Encaisser",
+                    type: "area",
+                    data: {{c_encaisser}}
+                }],
+                fill: {
+                    opacity: [.85, .25, 1],
+                    gradient: {
+                        inverseColors: !1,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: .85,
+                        opacityTo: .35,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "datetime"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points"
+                    }
+                },
+                tooltip: {
+                    shared: !0,
+                    intersect: !1,
+                    y: {
+                        formatter: function(e) {
+                            return void 0 !== e ? e.toFixed(0) + " points" : e
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: "#f1f1f1"
+                }
+                }
+                var chart = new ApexCharts(document.querySelector("#column_chart"), options);
+                chart.render();
+                column_chart
+
+
+        </script>
+        {% endif %}
+
+        {% if analytics == 'mois' %}
+        <script>
+
+                // commande performance chart
+
+                var options = {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: !1,
+                    toolbar: {
+                        show: !1
+                    }
+                },
+                stroke: {
+                    width: [0, 2, 4],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                colors: ["#f46a6a", "#556ee6", "#34c38f"],
+                series: [{
+                    name: "Commande Crée",
+                    type: "area",
+                    data: {{c_Cree}}
+                }, {
+                    name: "Commande Livrée",
+                    type: "column",
+                    data: {{c_Livrer}}
+                }, {
+                    name: "Commande en retour",
+                    type: "column",
+                    data: {{c_Retour}}
+                }],
+                fill: {
+                    opacity: [.85, .25, 1],
+                    gradient: {
+                        inverseColors: !1,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: .85,
+                        opacityTo: .55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "day"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points"
+                    }
+                },
+                tooltip: {
+                    shared: !0,
+                    intersect: !1,
+                    y: {
+                        formatter: function(e) {
+                            return void 0 !== e ? e.toFixed(0) + " points" : e
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: "#f1f1f1"
+                }
+                }
+                var chart = new ApexCharts(document.querySelector("#mixed_chart"), options);
+                chart.render();
+
+
+                // anomalie chart
+
+
+                var options = {
+                    chart: {
+                        height: 370,
+                        type: "radialBar"
+                    },
+                    plotOptions: {
+                        radialBar: {
+                            dataLabels: {
+                                name: {
+                                    fontSize: "22px"
+                                },
+                                value: {
+                                    fontSize: "16px"
+                                },
+                                total: {
+                                    show: !0,
+                                    label: "Total",
+                                    formatter: function(e) {
+                                        return {{totalCommande}}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    series: {{anomalie}},
+                    labels: ["En Confirmation", "En Preparation", "En Dispatch", "En Livraison", "Livrée", "En Retour"],
+                    colors: ["#556ee6", "#34c38f", "#f46a6a", "#f1b44c"]
+                    }
+                var chart = new ApexCharts(document.querySelector("#radial_chart"), options);
+                chart.render();
+
+
+                // encaissement et confirmation performance chart
+
+                var options = {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: !1,
+                    toolbar: {
+                        show: !1
+                    }
+                },
+                stroke: {
+                    width: [0, 2, 4],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                colors: ["#1DCD65", "#651DCD"],
+                series: [{
+                    name: "Commande Confirmer",
+                    type: "area",
+                    data: {{c_confirm}}
+                }, {
+                    name: "Commande Encaisser",
+                    type: "area",
+                    data: {{c_encaisser}}
+                }],
+                fill: {
+                    opacity: [.85, .25, 1],
+                    gradient: {
+                        inverseColors: !1,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: .85,
+                        opacityTo: .35,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "day"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points"
+                    }
+                },
+                tooltip: {
+                    shared: !0,
+                    intersect: !1,
+                    y: {
+                        formatter: function(e) {
+                            return void 0 !== e ? e.toFixed(0) + " points" : e
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: "#f1f1f1"
+                }
+                }
+                var chart = new ApexCharts(document.querySelector("#column_chart"), options);
+                chart.render();
+                column_chart
+
+
+        </script>
+        {% endif %}
+
+        {% if analytics == 'semaine' %}
+        <script>
+
+                // commande performance chart
+
+                var options = {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: !1,
+                    toolbar: {
+                        show: !1
+                    }
+                },
+                stroke: {
+                    width: [0, 2, 4],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                colors: ["#f46a6a", "#556ee6", "#34c38f"],
+                series: [{
+                    name: "Commande Crée",
+                    type: "area",
+                    data: {{c_Cree}}
+                }, {
+                    name: "Commande Livrée",
+                    type: "column",
+                    data: {{c_Livrer}}
+                }, {
+                    name: "Commande en retour",
+                    type: "column",
+                    data: {{c_Retour}}
+                }],
+                fill: {
+                    opacity: [.85, .25, 1],
+                    gradient: {
+                        inverseColors: !1,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: .85,
+                        opacityTo: .55,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["1", "2", "3", "4", "5", "6", "7",],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "day"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points"
+                    }
+                },
+                tooltip: {
+                    shared: !0,
+                    intersect: !1,
+                    y: {
+                        formatter: function(e) {
+                            return void 0 !== e ? e.toFixed(0) + " points" : e
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: "#f1f1f1"
+                }
+                }
+                var chart = new ApexCharts(document.querySelector("#mixed_chart"), options);
+                chart.render();
+
+
+                // anomalie chart
+
+
+                var options = {
+                    chart: {
+                        height: 370,
+                        type: "radialBar"
+                    },
+                    plotOptions: {
+                        radialBar: {
+                            dataLabels: {
+                                name: {
+                                    fontSize: "22px"
+                                },
+                                value: {
+                                    fontSize: "16px"
+                                },
+                                total: {
+                                    show: !0,
+                                    label: "Total",
+                                    formatter: function(e) {
+                                        return {{totalCommande}}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    series: {{anomalie}},
+                    labels: ["En Confirmation", "En Preparation", "En Dispatch", "En Livraison", "Livrée", "En Retour"],
+                    colors: ["#556ee6", "#34c38f", "#f46a6a", "#f1b44c"]
+                    }
+                var chart = new ApexCharts(document.querySelector("#radial_chart"), options);
+                chart.render();
+
+
+                // encaissement et confirmation performance chart
+
+                var options = {
+                chart: {
+                    height: 350,
+                    type: "line",
+                    stacked: !1,
+                    toolbar: {
+                        show: !1
+                    }
+                },
+                stroke: {
+                    width: [0, 2, 4],
+                    curve: "smooth"
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: "50%"
+                    }
+                },
+                colors: ["#1DCD65", "#651DCD"],
+                series: [{
+                    name: "Commande Confirmer",
+                    type: "area",
+                    data: {{c_confirm}}
+                }, {
+                    name: "Commande Encaisser",
+                    type: "area",
+                    data: {{c_encaisser}}
+                }],
+                fill: {
+                    opacity: [.85, .25, 1],
+                    gradient: {
+                        inverseColors: !1,
+                        shade: "light",
+                        type: "vertical",
+                        opacityFrom: .85,
+                        opacityTo: .35,
+                        stops: [0, 100, 100, 100]
+                    }
+                },
+                labels: ["1", "2", "3", "4", "5", "6", "7",],
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "day"
+                },
+                yaxis: {
+                    title: {
+                        text: "Points"
+                    }
+                },
+                tooltip: {
+                    shared: !0,
+                    intersect: !1,
+                    y: {
+                        formatter: function(e) {
+                            return void 0 !== e ? e.toFixed(0) + " points" : e
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: "#f1f1f1"
+                }
+                }
+                var chart = new ApexCharts(document.querySelector("#column_chart"), options);
+                chart.render();
+                column_chart
+
+
+        </script>
+        {% endif %}
+
+
+        <script>
+            function analit(){
+                var analytic = document.querySelector('input[name="formRadios"]:checked').value;
+                window.open("http://{{request.get_host}}/dashboard/"+analytic);
+            }
+        </script>
+
+{% endblock jslib %}
